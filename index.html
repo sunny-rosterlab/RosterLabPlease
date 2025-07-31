@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICU Triage</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Character Selection Screen -->
+        <div id="character-select" class="screen active">
+            <h1 class="pixel-text">ICU TRIAGE</h1>
+            <h2 class="pixel-text">Choose Your Character</h2>
+            <div class="character-grid">
+                <div class="character-card" data-character="veteran">
+                    <div class="character-sprite veteran">
+                        <img src="assets/characters/veteran.png" alt="Saniel">
+                    </div>
+                    <h3>Dr. Saniel</h3>
+                    <p>Veteran Doctor</p>
+                    <p class="ability">Has seen it all (twice)</p>
+                </div>
+                <div class="character-card" data-character="empath">
+                    <div class="character-sprite empath">
+                        <img src="assets/characters/empath.png" alt="Ihris">
+                    </div>
+                    <h3>Nurse Ihris</h3>
+                    <p>Empathetic Nurse</p>
+                    <p class="ability">Gives the best hugs</p>
+                </div>
+                <div class="character-card" data-character="efficient">
+                    <div class="character-sprite efficient">
+                        <img src="assets/characters/efficient.png" alt="Dunny">
+                    </div>
+                    <h3>Dr. Dunny</h3>
+                    <p>Efficiency Expert</p>
+                    <p class="ability">Runs on caffeine & chaos</p>
+                </div>
+                <div class="character-card" data-character="resourceful">
+                    <div class="character-sprite resourceful">
+                        <img src="assets/characters/extra.png" alt="Ssaac">
+                    </div>
+                    <h3>Dr. Ssaac</h3>
+                    <p>Resource Manager</p>
+                    <p class="ability">Bed hoarder extraordinaire</p>
+                </div>
+            </div>
+            <div class="difficulty-select">
+                <h3 class="pixel-text">Select Difficulty</h3>
+                <button class="pixel-btn" data-difficulty="easy">Easy</button>
+                <button class="pixel-btn" data-difficulty="medium">Medium</button>
+                <button class="pixel-btn" data-difficulty="hard">Hard</button>
+            </div>
+        </div>
+
+        <!-- Main Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="rosterlab-logo">
+                <a href="https://rosterlab.com" target="_blank" class="logo-link">
+                    <div class="logo-text">RosterLab</div>
+                </a>
+            </div>
+            <div class="top-bar">
+                <div class="timer">
+                    <span class="label">SHIFT TIME</span>
+                    <span id="timer-display">08:00</span>
+                </div>
+                <div class="resources">
+                    <div class="resource">
+                        <span class="icon">🏥</span>
+                        <span id="beds-count">10/10</span>
+                    </div>
+                    <div class="resource">
+                        <span class="icon">👩‍⚕️</span>
+                        <span id="staff-count">5/5</span>
+                    </div>
+                    <div class="resource">
+                        <span class="icon">💰</span>
+                        <span id="budget">$5000</span>
+                    </div>
+                </div>
+                <div class="score">
+                    <span class="label">SCORE</span>
+                    <span id="score-display">0</span>
+                </div>
+                <button id="give-up-btn" class="give-up-btn" onclick="confirmGiveUp()">GIVE UP</button>
+            </div>
+
+            <div class="main-area">
+                <div class="waiting-room">
+                    <h3 class="pixel-text">WAITING ROOM</h3>
+                    <div id="patient-queue"></div>
+                </div>
+
+                <div class="triage-area">
+                    <h3 class="pixel-text">TRIAGE ASSESSMENT</h3>
+                    <div id="current-patient" class="patient-detail">
+                        <p>No patient selected</p>
+                    </div>
+                    <div class="triage-controls">
+                        <div class="priority-buttons">
+                            <button class="priority-btn" data-priority="5">CRITICAL</button>
+                            <button class="priority-btn" data-priority="4">URGENT</button>
+                            <button class="priority-btn" data-priority="3">SERIOUS</button>
+                            <button class="priority-btn" data-priority="2">STABLE</button>
+                            <button class="priority-btn" data-priority="1">MINOR</button>
+                        </div>
+                        <div class="staff-assignment">
+                            <h4>Assign Staff:</h4>
+                            <select id="staff-select">
+                                <option value="">Select staff...</option>
+                            </select>
+                            <button id="assign-btn" class="pixel-btn">ASSIGN</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="treatment-area">
+                    <h3 class="pixel-text">TREATMENT BEDS</h3>
+                    <div id="treatment-beds"></div>
+                </div>
+            </div>
+
+            <div id="dilemma-modal" class="modal">
+                <div class="modal-content">
+                    <h3 class="pixel-text">ETHICAL DILEMMA</h3>
+                    <p id="dilemma-text"></p>
+                    <div class="dilemma-choices"></div>
+                </div>
+            </div>
+
+            <div id="points-popup" class="points-popup">
+                <span id="points-text"></span>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over" class="screen">
+            <h1 class="pixel-text">SHIFT COMPLETE</h1>
+            <div class="final-stats">
+                <p>Final Score: <span id="final-score"></span></p>
+                <p>Patients Saved: <span id="patients-saved"></span></p>
+                <p>Patients Lost: <span id="patients-lost"></span></p>
+                <p>Accuracy Rate: <span id="accuracy-rate"></span>%</p>
+            </div>
+            <div class="leaderboard">
+                <h3 class="pixel-text">LEADERBOARD - TOP PLAYERS</h3>
+                <div class="leaderboard-filters">
+                    <button class="filter-btn active" data-filter="all">All Players</button>
+                    <button class="filter-btn" data-filter="character">By Character</button>
+                    <button class="filter-btn" data-filter="difficulty">By Difficulty</button>
+                </div>
+                <div id="leaderboard-list"></div>
+                <div class="rosterlab-link">
+                    <p style="text-align: center; margin-top: 20px; font-size: 8px; color: var(--text-secondary);">
+                        Made with ❤️ for team building | Visit 
+                        <a href="https://rosterlab.com" target="_blank" style="color: var(--accent-yellow); text-decoration: none;">RosterLab.com</a>
+                    </p>
+                </div>
+            </div>
+            <button class="pixel-btn" id="play-again-btn" onclick="document.getElementById('game-over').classList.remove('active'); document.getElementById('character-select').classList.add('active'); window.location.reload();">PLAY AGAIN</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

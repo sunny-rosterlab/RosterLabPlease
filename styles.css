@@ -1,0 +1,697 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+    --bg-dark: #1a1a1a;
+    --bg-medium: #2a2a2a;
+    --bg-light: #3a3a3a;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --accent-red: #ff4444;
+    --accent-yellow: #ffaa44;
+    --accent-green: #44ff44;
+    --accent-blue: #4444ff;
+    --border-color: #555;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Press Start 2P', monospace;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-size: 12px;
+    line-height: 1.8;
+    overflow: hidden;
+}
+
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+.screen.active {
+    display: block;
+}
+
+.pixel-text {
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+    margin-bottom: 20px;
+}
+
+.pixel-btn {
+    background-color: var(--bg-medium);
+    border: 2px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 10px 20px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 5px;
+}
+
+.pixel-btn:hover {
+    background-color: var(--bg-light);
+    border-color: var(--text-primary);
+    transform: scale(1.05);
+}
+
+.pixel-btn.selected {
+    background-color: var(--bg-light);
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+}
+
+.start-btn {
+    margin-top: 30px;
+    padding: 15px 30px;
+    font-size: 14px;
+    background-color: var(--accent-green);
+    color: var(--bg-dark);
+    display: none;
+}
+
+.start-btn:hover {
+    background-color: var(--accent-yellow);
+    transform: scale(1.1);
+}
+
+/* Character Selection */
+#character-select {
+    text-align: center;
+}
+
+.character-grid {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin: 40px 0;
+    flex-wrap: wrap;
+}
+
+.character-card {
+    background-color: var(--bg-medium);
+    border: 3px solid var(--border-color);
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.character-card:hover {
+    border-color: var(--accent-yellow);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(255,170,68,0.3);
+}
+
+.character-card.selected {
+    border-color: var(--accent-green);
+    box-shadow: 0 5px 15px rgba(68,255,68,0.5);
+    transform: translateY(-5px);
+}
+
+.character-sprite {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 15px;
+    image-rendering: pixelated;
+    background-size: cover;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.character-sprite img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    image-rendering: pixelated;
+}
+
+.character-sprite.veteran {
+    background-color: #4a90e2;
+}
+
+.character-sprite.empath {
+    background-color: #e74c3c;
+}
+
+.character-sprite.efficient {
+    background-color: #2ecc71;
+}
+
+.character-sprite.resourceful {
+    background-color: #9b59b6;
+}
+
+.character-card h3 {
+    font-size: 10px;
+    margin: 10px 0 5px;
+}
+
+.character-card p {
+    font-size: 8px;
+    color: var(--text-secondary);
+}
+
+.ability {
+    color: var(--accent-green) !important;
+    margin-top: 10px;
+}
+
+.difficulty-select {
+    margin-top: 40px;
+}
+
+/* RosterLab Logo */
+.rosterlab-logo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 100;
+}
+
+.logo-link {
+    text-decoration: none;
+}
+
+.logo-text {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    color: var(--accent-yellow);
+    background-color: var(--bg-dark);
+    padding: 8px 12px;
+    border: 2px solid var(--accent-yellow);
+    border-radius: 4px;
+    opacity: 0.8;
+    transition: all 0.3s;
+}
+
+.logo-text:hover {
+    opacity: 1;
+    background-color: var(--accent-yellow);
+    color: var(--bg-dark);
+    transform: scale(1.05);
+}
+
+/* Main Game Screen */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-medium);
+    padding: 15px;
+    border: 2px solid var(--border-color);
+    margin-bottom: 20px;
+    position: relative;
+    margin-top: 50px;
+}
+
+.give-up-btn {
+    position: absolute;
+    right: 15px;
+    bottom: -40px;
+    background-color: var(--accent-red);
+    border: 2px solid var(--accent-red);
+    color: white;
+    padding: 8px 15px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.give-up-btn:hover {
+    background-color: #cc0000;
+    transform: scale(1.05);
+}
+
+.timer, .score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.label {
+    font-size: 8px;
+    color: var(--text-secondary);
+}
+
+#timer-display, #score-display {
+    font-size: 16px;
+    color: var(--accent-yellow);
+}
+
+.resources {
+    display: flex;
+    gap: 20px;
+}
+
+.resource {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.icon {
+    font-size: 20px;
+}
+
+.main-area {
+    display: grid;
+    grid-template-columns: 250px 1fr 250px;
+    gap: 20px;
+    height: calc(100vh - 140px);
+}
+
+.waiting-room, .triage-area, .treatment-area {
+    background-color: var(--bg-medium);
+    border: 2px solid var(--border-color);
+    padding: 15px;
+    overflow-y: auto;
+}
+
+/* Waiting Room */
+#patient-queue {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.patient-card {
+    background-color: var(--bg-light);
+    border: 2px solid var(--border-color);
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.patient-card:hover {
+    border-color: var(--text-primary);
+}
+
+.patient-card.selected {
+    border-color: var(--accent-yellow);
+    box-shadow: 0 0 10px rgba(255,170,68,0.5);
+}
+
+.patient-card h4 {
+    font-size: 10px;
+    margin-bottom: 5px;
+}
+
+.patient-card p {
+    font-size: 8px;
+    color: var(--text-secondary);
+}
+
+
+/* Triage Area */
+.patient-detail {
+    background-color: var(--bg-light);
+    border: 2px solid var(--border-color);
+    padding: 20px;
+    min-height: 200px;
+    margin-bottom: 20px;
+}
+
+.patient-detail h4 {
+    margin-bottom: 15px;
+    color: var(--accent-yellow);
+}
+
+.vital-signs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.vital {
+    font-size: 9px;
+}
+
+.vital span {
+    color: var(--text-secondary);
+}
+
+.priority-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.priority-btn {
+    flex: 1;
+    min-width: 100px;
+    padding: 10px;
+    background-color: var(--bg-light);
+    border: 2px solid var(--border-color);
+    color: var(--text-primary);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.priority-btn[data-priority="5"]:hover { border-color: #ff0000; }
+.priority-btn[data-priority="4"]:hover { border-color: #ff6600; }
+.priority-btn[data-priority="3"]:hover { border-color: #ffaa00; }
+.priority-btn[data-priority="2"]:hover { border-color: #ffff00; }
+.priority-btn[data-priority="1"]:hover { border-color: #00ff00; }
+
+.priority-btn.selected[data-priority="5"] { 
+    background-color: #ff0000; 
+    border-color: #ff0000; 
+    color: white; 
+}
+.priority-btn.selected[data-priority="4"] { 
+    background-color: #ff6600; 
+    border-color: #ff6600; 
+    color: white; 
+}
+.priority-btn.selected[data-priority="3"] { 
+    background-color: #ffaa00; 
+    border-color: #ffaa00; 
+    color: black; 
+}
+.priority-btn.selected[data-priority="2"] { 
+    background-color: #ffff00; 
+    border-color: #ffff00; 
+    color: black; 
+}
+.priority-btn.selected[data-priority="1"] { 
+    background-color: #00ff00; 
+    border-color: #00ff00; 
+    color: black; 
+}
+
+.staff-assignment {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#staff-select {
+    background-color: var(--bg-light);
+    border: 2px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 8px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    flex: 1;
+}
+
+/* Treatment Beds */
+#treatment-beds {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.bed {
+    background-color: var(--bg-light);
+    border: 2px solid var(--border-color);
+    padding: 10px;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 9px;
+}
+
+.bed.occupied {
+    border-color: var(--accent-red);
+}
+
+.bed.empty {
+    border-color: var(--accent-green);
+}
+
+.bed.discharged {
+    border-color: var(--accent-blue);
+    background-color: rgba(68, 68, 255, 0.1);
+}
+
+.bed.deceased {
+    border-color: var(--accent-red);
+    background-color: rgba(255, 68, 68, 0.1);
+}
+
+.bed .outcome {
+    font-size: 8px;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.bed .small {
+    font-size: 7px;
+    color: var(--text-secondary);
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 1000;
+}
+
+.modal.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: var(--bg-medium);
+    border: 3px solid var(--accent-red);
+    padding: 30px;
+    max-width: 600px;
+    text-align: center;
+}
+
+.dilemma-choices {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Game Over */
+#game-over {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+#game-over .pixel-btn {
+    margin-top: 30px;
+    padding: 15px 30px;
+    font-size: 14px;
+    background-color: var(--accent-green);
+    color: var(--bg-dark);
+    border: 3px solid var(--accent-green);
+}
+
+#game-over .pixel-btn:hover {
+    background-color: var(--accent-yellow);
+    border-color: var(--accent-yellow);
+    transform: scale(1.1);
+}
+
+.final-stats {
+    background-color: var(--bg-medium);
+    border: 2px solid var(--border-color);
+    padding: 30px;
+    margin: 20px 0;
+}
+
+.final-stats p {
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.leaderboard {
+    background-color: var(--bg-medium);
+    border: 2px solid var(--border-color);
+    padding: 20px;
+    margin: 20px 0;
+    min-width: 600px;
+    max-width: 800px;
+}
+
+.leaderboard-filters {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.filter-btn {
+    background-color: var(--bg-light);
+    border: 2px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 8px 15px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-btn:hover {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+}
+
+.filter-btn.active {
+    background-color: var(--accent-yellow);
+    color: var(--bg-dark);
+    border-color: var(--accent-yellow);
+}
+
+#leaderboard-list {
+    margin-top: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.leaderboard-entry {
+    display: grid;
+    grid-template-columns: 40px 1fr 120px 100px 100px;
+    align-items: center;
+    padding: 10px 5px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 10px;
+}
+
+.leaderboard-entry.current-player {
+    background-color: var(--bg-light);
+    border: 2px solid var(--accent-yellow);
+    margin: 2px 0;
+}
+
+.rank {
+    color: var(--accent-yellow);
+    font-weight: bold;
+}
+
+.player-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.player-name {
+    color: var(--text-primary);
+}
+
+.player-details {
+    font-size: 8px;
+    color: var(--text-secondary);
+}
+
+.score-display {
+    color: var(--accent-green);
+    text-align: right;
+    font-size: 12px;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.critical {
+    animation: pulse 1s infinite;
+}
+
+/* Points Popup */
+.points-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--bg-dark);
+    border: 3px solid var(--accent-yellow);
+    padding: 20px 40px;
+    font-size: 18px;
+    z-index: 2000;
+    display: none;
+    animation: popupAnimation 2s ease-out;
+}
+
+.points-popup.show {
+    display: block;
+}
+
+.points-popup.positive {
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+}
+
+.points-popup.negative {
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+}
+
+@keyframes popupAnimation {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+    80% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -60%) scale(1);
+    }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
