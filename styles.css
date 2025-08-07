@@ -96,17 +96,18 @@ body {
 .character-grid {
     display: flex;
     justify-content: center;
-    gap: 25px;
+    gap: 30px;
     margin: 40px 0;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .character-card {
     background-color: var(--bg-medium);
     border: 3px solid var(--border-color);
-    padding: 20px;
+    padding: 30px;
     cursor: pointer;
     transition: all 0.3s;
+    min-width: 200px;
 }
 
 .character-card:hover {
@@ -122,9 +123,9 @@ body {
 }
 
 .character-sprite {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 15px;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
     image-rendering: pixelated;
     background-size: cover;
     position: relative;
@@ -157,18 +158,20 @@ body {
 }
 
 .character-card h3 {
-    font-size: 10px;
-    margin: 10px 0 5px;
+    font-size: 12px;
+    margin: 15px 0 8px;
 }
 
 .character-card p {
-    font-size: 8px;
+    font-size: 10px;
     color: var(--text-secondary);
+    margin: 5px 0;
 }
 
 .ability {
     color: var(--accent-green) !important;
-    margin-top: 10px;
+    margin-top: 15px;
+    font-size: 9px;
 }
 
 .difficulty-select {

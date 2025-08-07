@@ -46,28 +46,28 @@ const medicalConditions = [
 // Character abilities
 const characterAbilities = {
     veteran: {
-        name: "Dr. Saniel",
+        name: "Dr Daniel",
         diagnosisBonus: 0.1,
         speedBonus: 0,
         comfortBonus: 0,
         extraBeds: 0
     },
     empath: {
-        name: "Nurse Ihris",
+        name: "Nurse Chris",
         diagnosisBonus: 0,
         speedBonus: 0,
         comfortBonus: 0.15,
         extraBeds: 0
     },
     efficient: {
-        name: "Dr. Dunny",
+        name: "Dr Sunny",
         diagnosisBonus: 0,
         speedBonus: 0.2,
         comfortBonus: 0,
         extraBeds: 0
     },
     resourceful: {
-        name: "Dr. Ssaac",
+        name: "Nurse Isaac",
         diagnosisBonus: 0,
         speedBonus: 0,
         comfortBonus: 0,
