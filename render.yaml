@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: rosterlab-icu-triage-game
+    runtime: static
+    buildCommand: "echo 'No build step required for static site'"
+    staticPublishPath: .
+    pullRequestPreviewsEnabled: false
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
